@@ -180,10 +180,10 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto" style={{ maxWidth: "1440px" }}>
-        <nav className="flex items-center justify-between h-20 px-4 lg:px-8">
+        <nav className="flex items-center justify-between h-16 lg:h-20 px-4 lg:px-8">
           {/* LEFT: Logo */}
           <Link href="/" className="shrink-0">
-            <Image src="/vasplogogo.png" alt="VASP Systemic" width={2560} height={748} priority style={{ imageRendering: "auto", objectFit: "contain", height: "56px", width: "auto" }} />
+            <Image src="/vasplogogo.png" alt="VASP Systemic" width={2560} height={748} priority style={{ imageRendering: "auto", objectFit: "contain", height: "40px", width: "auto" }} className="lg:h-[56px] h-[40px] w-auto" />
           </Link>
 
           {/* CENTER: Navigation */}
