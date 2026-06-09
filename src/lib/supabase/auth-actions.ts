@@ -12,7 +12,7 @@ export async function signInWithGoogle(origin?: string) {
     provider: "google",
     options: { redirectTo },
   });
-  if (data.url) redirect(data.url);
+  return data.url;
 }
 
 export async function signOut() {
