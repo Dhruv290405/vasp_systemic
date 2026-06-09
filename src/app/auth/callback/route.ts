@@ -4,9 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 const ALLOWED_EMAILS = ["vaspsystemic@gmail.com", "dhruvtiwari864@gmail.com"];
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams, origin: requestOrigin } = new URL(request.url);
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/admin";
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "");
+  const origin = requestOrigin.includes("localhost") && siteUrl
+    ? siteUrl
+    : requestOrigin;
 
   if (code) {
     const supabase = await createClient();
