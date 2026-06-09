@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
 
   const handleGoogleSignIn = async () => {
     setOauthLoading("google");
-    await signInWithGoogle();
+    await signInWithGoogle(window.location.origin);
   };
 
   const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
