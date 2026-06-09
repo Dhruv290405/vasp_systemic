@@ -49,8 +49,8 @@ export const metadata: Metadata = {
       "Building India's Intelligent Railway Operations Ecosystem with AI, IoT, and Safety solutions.",
   },
   icons: {
-    icon: [{ url: "/vasplogogo.png", type: "image/png" }],
-    shortcut: "/vasplogogo.png",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/vasplogogo.png", type: "image/png" }],
+    shortcut: "/favicon.svg",
     apple: "/vasplogogo.png",
   },
   robots: {
