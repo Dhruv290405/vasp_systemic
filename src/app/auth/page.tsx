@@ -4,14 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { signInWithGoogle } from "@/lib/supabase/auth-actions";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AuthPage() {
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
     setLoading("google");
-    await signInWithGoogle();
+    const supabase = createClient();
+    const { data } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (data.url) window.location.href = data.url;
   };
 
   return (

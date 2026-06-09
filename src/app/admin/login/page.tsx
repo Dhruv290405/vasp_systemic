@@ -7,7 +7,8 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInWithGoogle, resetPassword } from "@/lib/supabase/auth-actions";
+import { createClient } from "@/lib/supabase/client";
+import { resetPassword } from "@/lib/supabase/auth-actions";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -49,8 +50,12 @@ export default function AdminLoginPage() {
 
   const handleGoogleSignIn = async () => {
     setOauthLoading("google");
-    const url = await signInWithGoogle(window.location.origin);
-    if (url) window.location.href = url;
+    const supabase = createClient();
+    const { data } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (data.url) window.location.href = data.url;
   };
 
   const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
