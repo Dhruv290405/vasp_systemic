@@ -21,6 +21,9 @@ export async function sendEmail({
       user: process.env.SMTP_EMAIL,
       pass: (process.env.SMTP_PASSWORD || "").replace(/\s/g, ""),
     },
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 10000,
   });
 
   await transporter.sendMail({
