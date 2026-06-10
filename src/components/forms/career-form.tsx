@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -22,6 +22,12 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (localStorage.getItem(`applied_${positionId}`)) {
+      setSubmitted(true);
+    }
+  }, [positionId]);
 
   const {
     register,
@@ -114,6 +120,7 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
         throw new Error("Application submission failed");
       }
 
+      localStorage.setItem(`applied_${positionId}`, "true");
       setSubmitted(true);
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Upload failed. Check console for details.");
