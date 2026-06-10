@@ -48,21 +48,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to submit application" }, { status: 500 });
     }
 
-    let emailSent = false;
-    let emailError = "";
-    try {
-      await sendEmail(careerEmail({
-        ...body,
-        position: body.positionId,
-        resumeUrl: body.resumeUrl,
-      }));
-      emailSent = true;
-    } catch (err) {
-      emailError = err instanceof Error ? err.message : "Unknown email error";
-      console.error("Failed to send admin notification:", emailError);
-    }
+    sendEmail(careerEmail({
+      ...body,
+      position: body.positionId,
+      resumeUrl: body.resumeUrl,
+    })).catch((err) => console.error("Failed to send admin notification:", err));
 
-    return NextResponse.json({ success: true, emailSent, emailError });
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Application submit error:", err);
     return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
