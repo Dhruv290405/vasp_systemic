@@ -17,12 +17,21 @@ export async function POST(req: NextRequest) {
     const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const { error } = await supabase.storage.from("products").upload(fileName, buffer, {
+    let { error } = await supabase.storage.from("products").upload(fileName, buffer, {
       contentType: file.type,
       upsert: false,
     });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error && error.message?.includes("bucket")) {
+      const { error: createError } = await supabase.storage.createBucket("products", { public: true });
+      if (createError) return NextResponse.json({ error: createError.message }, { status: 500 });
+      const retry = await supabase.storage.from("products").upload(fileName, buffer, {
+        contentType: file.type, upsert: false,
+      });
+      if (retry.error) return NextResponse.json({ error: retry.error.message }, { status: 500 });
+    } else if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     const { data: publicUrlData } = supabase.storage.from("products").getPublicUrl(fileName);
     return NextResponse.json({ url: publicUrlData.publicUrl });

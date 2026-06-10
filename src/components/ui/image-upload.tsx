@@ -44,8 +44,8 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
 
       setPreview(data.url);
       onChange(data.url);
-    } catch {
-      alert("Failed to upload image");
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Failed to upload image");
     } finally {
       setUploading(false);
     }
