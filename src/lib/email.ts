@@ -18,7 +18,7 @@ export async function sendEmail({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "VASP Systemic <onboarding@resend.dev>",
+        from: "VASP Systemic <noreply@vaspsystemic.com>",
         to: [recipient],
         subject,
         html,
