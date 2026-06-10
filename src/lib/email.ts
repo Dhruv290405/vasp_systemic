@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 export async function sendEmail({
   to,
   subject,
@@ -9,27 +7,30 @@ export async function sendEmail({
   subject: string;
   html: string;
 }) {
-  if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD || process.env.SMTP_PASSWORD === "your-gmail-app-password") {
-    throw new Error("SMTP not configured");
+  const apiKey = process.env.RESEND_API_KEY;
+  const recipient = to || "vaspsystemic@gmail.com";
+
+  if (apiKey && apiKey !== "your-resend-api-key") {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "VASP Systemic <onboarding@resend.dev>",
+        to: [recipient],
+        subject,
+        html,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Resend API error (${res.status}): ${err}`);
+    }
+    return;
   }
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: (process.env.SMTP_PASSWORD || "").replace(/\s/g, ""),
-    },
-    connectionTimeout: 8000,
-    greetingTimeout: 8000,
-    socketTimeout: 10000,
-  });
-
-  await transporter.sendMail({
-    from: process.env.SMTP_EMAIL,
-    to: to || "vaspsystemic@gmail.com",
-    subject,
-    html,
-  });
+  throw new Error("Email not configured. Set RESEND_API_KEY in environment variables.");
 }
