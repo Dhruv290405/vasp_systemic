@@ -3,7 +3,7 @@ import { z } from "zod";
 export const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be exactly 10 digits").or(z.literal("")).optional(),
   company: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
   type: z.enum(["general", "demo", "business", "partnership"]),
@@ -12,7 +12,7 @@ export const contactSchema = z.object({
 export const demoRequestSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
   company: z.string().min(2, "Company name is required"),
   jobTitle: z.string().optional(),
   solution: z.string().min(1, "Please select a solution"),
@@ -23,7 +23,7 @@ export const careerApplicationSchema = z.object({
   positionId: z.string().min(1, "Please select a position"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number is required"),
+  phone: z.string().regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
   resumeUrl: z.string().optional(),
   coverLetter: z.string().optional(),
 });

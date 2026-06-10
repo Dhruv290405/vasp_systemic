@@ -72,7 +72,7 @@ export function ContactForm({ defaultType }: ContactFormProps) {
       <div className="grid sm:grid-cols-2 gap-5">
         <div className="space-y-2">
           <Label htmlFor="cf_phone">Phone</Label>
-          <Input id="cf_phone" type="tel" {...register("phone")} placeholder="+91 XXXXXXXXXX" />
+          <Input id="cf_phone" type="tel" maxLength={10} {...register("phone")} placeholder="10-digit mobile number" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="cf_company">Company</Label>

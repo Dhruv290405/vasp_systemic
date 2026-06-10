@@ -68,7 +68,7 @@ export function DemoRequestForm() {
       <div className="grid sm:grid-cols-2 gap-5">
         <div className="space-y-2">
           <Label htmlFor="phone">Phone *</Label>
-          <Input id="phone" type="tel" {...register("phone")} placeholder="+91 XXXXXXXXXX" />
+          <Input id="phone" type="tel" maxLength={10} {...register("phone")} placeholder="10-digit mobile number" />
           {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
         </div>
         <div className="space-y-2">

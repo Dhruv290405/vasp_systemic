@@ -165,7 +165,7 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
 
       <div className="space-y-2">
         <Label htmlFor="ca_phone">Phone *</Label>
-        <Input id="ca_phone" type="tel" {...register("phone")} placeholder="+91 XXXXXXXXXX" />
+        <Input id="ca_phone" type="tel" maxLength={10} {...register("phone")} placeholder="10-digit mobile number" />
         {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
       </div>
 
