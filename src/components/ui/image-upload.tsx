@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { X, Loader2, ImageIcon } from "lucide-react";
 
 interface ImageUploadProps {
@@ -12,10 +12,6 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(value);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    fetch("/api/upload").catch(() => {});
-  }, []);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,31 +29,18 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
     setUploading(true);
     try {
       const ext = file.name.split(".").pop();
-      const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
 
       const formData = new FormData();
       formData.append("file", file, fileName);
 
-      const uploadRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/products/${fileName}`,
-        {
-          method: "POST",
-          headers: {
-            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-          },
-          body: formData,
-        }
-      );
+      const uploadRes = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await uploadRes.json();
 
-      if (!uploadRes.ok) {
-        const errText = await uploadRes.text();
-        throw new Error(errText || "Upload failed");
-      }
+      if (!uploadRes.ok || !data.url) throw new Error(data.error || "Upload failed");
 
-      const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
-      setPreview(publicUrl);
-      onChange(publicUrl);
+      setPreview(data.url);
+      onChange(data.url);
     } catch (e) {
       alert(e instanceof Error ? e.message : "Failed to upload image");
     } finally {
