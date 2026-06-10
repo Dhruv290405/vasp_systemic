@@ -98,9 +98,14 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
         body: JSON.stringify(data),
       });
 
+      if (res.status === 409) {
+        const errData = await res.json();
+        setUploadError(errData.error || "You have already applied for this position.");
+        return;
+      }
+
       if (!res.ok) {
-        const errText = await res.text();
-        throw new Error("Application submission failed: " + errText);
+        throw new Error("Application submission failed");
       }
 
       setSubmitted(true);

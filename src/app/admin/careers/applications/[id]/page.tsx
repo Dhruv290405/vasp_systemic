@@ -18,6 +18,7 @@ export default function CandidateDetailPage() {
   const [candidate, setCandidate] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/careers/applications/${params.id}`)
@@ -29,12 +30,15 @@ export default function CandidateDetailPage() {
 
   const updateStatus = async (status: string) => {
     setUpdating(true);
-    await fetch("/api/careers/applications", {
+    setEmailStatus(null);
+    const res = await fetch("/api/careers/applications", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: params.id, status }),
     });
-    setCandidate((prev: any) => prev ? { ...prev, status } : prev);
+    const result = await res.json();
+    setCandidate((prev: any) => prev ? { ...prev, status: result.status || prev.status } : prev);
+    setEmailStatus(result.emailSent ? "Email sent to candidate" : result.emailError ? `Email failed: ${result.emailError}` : null);
     setUpdating(false);
   };
 
@@ -103,6 +107,11 @@ export default function CandidateDetailPage() {
               {s.charAt(0).toUpperCase() + s.slice(1)}
             </button>
           ))}
+        {emailStatus && (
+          <p className={`text-sm mt-3 ${emailStatus.includes("sent") ? "text-green-600" : emailStatus.includes("failed") ? "text-red-500" : "text-neutral-400"}`}>
+            {emailStatus}
+          </p>
+        )}
         </div>
       </div>
     </div>

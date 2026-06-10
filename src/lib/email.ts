@@ -18,14 +18,13 @@ export async function sendEmail({
   html: string;
 }) {
   if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD || process.env.SMTP_PASSWORD === "your-gmail-app-password") {
-    console.warn("SMTP not configured, skipping email send");
-    return;
+    throw new Error("SMTP not configured");
   }
 
-  transporter.sendMail({
+  await transporter.sendMail({
     from: process.env.SMTP_EMAIL,
     to: to || "vaspsystemic@gmail.com",
     subject,
     html,
-  }).catch((err) => console.error("Email send failed:", err.message));
+  });
 }

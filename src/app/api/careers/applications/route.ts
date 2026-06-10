@@ -14,14 +14,23 @@ export async function PUT(request: NextRequest) {
   const { data, error } = await supabase.from("career_applications").update(updates).eq("id", id).select().single();
   if (error) return Response.json({ error: error.message }, { status: 500 });
 
+  let emailSent = false;
+  let emailError = "";
+
   if (updates.status && data) {
-    const { data: position } = await supabase.from("career_positions").select("title").eq("id", data.position_id).single();
-    const positionTitle = position?.title || "a position at VASP Systemic";
-    await sendEmail({
-      to: data.email,
-      ...statusUpdateEmail({ name: data.name, positionTitle, status: updates.status }),
-    });
+    try {
+      const { data: position } = await supabase.from("career_positions").select("title").eq("id", data.position_id).single();
+      const positionTitle = position?.title || "a position at VASP Systemic";
+      await sendEmail({
+        to: data.email,
+        ...statusUpdateEmail({ name: data.name, positionTitle, status: updates.status }),
+      });
+      emailSent = true;
+    } catch (err) {
+      emailError = err instanceof Error ? err.message : "Unknown email error";
+      console.error("Failed to send status update email:", emailError);
+    }
   }
 
-  return Response.json(data);
+  return Response.json({ ...data, emailSent, emailError });
 }

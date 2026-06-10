@@ -9,6 +9,24 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    // Check if already applied for this position
+    const checkRes = await fetch(
+      `${supabaseUrl}/rest/v1/career_applications?email=eq.${encodeURIComponent(body.email)}&position_id=eq.${encodeURIComponent(body.positionId)}&select=id`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      }
+    );
+
+    if (checkRes.ok) {
+      const existing = await checkRes.json();
+      if (Array.isArray(existing) && existing.length > 0) {
+        return NextResponse.json({ error: "You have already applied for this position." }, { status: 409 });
+      }
+    }
+
     const res = await fetch(`${supabaseUrl}/rest/v1/career_applications`, {
       method: "POST",
       headers: {
@@ -28,19 +46,24 @@ export async function POST(request: Request) {
     });
 
     if (!res.ok) {
-      const errText = await res.text();
-      console.error("Supabase error:", errText);
-      return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
+      return NextResponse.json({ error: "Failed to submit application" }, { status: 500 });
     }
 
-    await sendEmail(careerEmail({
-      ...body,
-      position: body.positionId,
-      resumeUrl: body.resumeUrl,
-    }));
+    let emailSent = false;
+    try {
+      await sendEmail(careerEmail({
+        ...body,
+        position: body.positionId,
+        resumeUrl: body.resumeUrl,
+      }));
+      emailSent = true;
+    } catch {
+      console.error("Failed to send application notification email");
+    }
 
-    return NextResponse.json({ success: true });
-  } catch {
+    return NextResponse.json({ success: true, emailSent });
+  } catch (err) {
+    console.error("Application submit error:", err);
     return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
   }
 }
