@@ -73,6 +73,9 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
       const formData = new FormData();
       formData.append("file", file, fileName);
 
+      const controller = new AbortController();
+      const uploadTimeout = setTimeout(() => controller.abort(), 30000);
+
       const uploadRes = await fetch(
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/resumes/${fileName}`,
         {
@@ -82,8 +85,11 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
           },
           body: formData,
+          signal: controller.signal,
         }
       );
+
+      clearTimeout(uploadTimeout);
 
       if (!uploadRes.ok) {
         const errText = await uploadRes.text();

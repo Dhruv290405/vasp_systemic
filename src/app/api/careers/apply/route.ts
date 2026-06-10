@@ -49,19 +49,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to submit application" }, { status: 500 });
     }
 
-    let emailSent = false;
-    try {
-      await sendEmail(careerEmail({
-        ...body,
-        position: body.positionId,
-        resumeUrl: body.resumeUrl,
-      }));
-      emailSent = true;
-    } catch {
-      console.error("Failed to send application notification email");
-    }
+    sendEmail(careerEmail({
+      ...body,
+      position: body.positionId,
+      resumeUrl: body.resumeUrl,
+    })).catch((err) => console.error("Failed to send application notification email:", err));
 
-    return NextResponse.json({ success: true, emailSent });
+    return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Application submit error:", err);
     return NextResponse.json({ error: "Failed to submit" }, { status: 500 });

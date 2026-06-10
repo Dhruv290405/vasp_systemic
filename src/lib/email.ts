@@ -19,13 +19,15 @@ export async function sendEmail({
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    requireTLS: true,
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
+      pass: (process.env.SMTP_PASSWORD || "").replace(/\s/g, ""),
     },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 
   await transporter.verify();
