@@ -20,7 +20,7 @@ export default function IndustriesPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">Industries We Serve</h1>
             <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              Deep domain expertise across railway and industrial sectors, delivering tailored solutions for each industry&apos;s unique challenges.
+              Deep domain expertise across railway and industrial sectors, delivering tailored solutions for each industry's unique challenges.
             </p>
           </motion.div>
         </div>

@@ -86,12 +86,12 @@ export default function AdminLoginPage() {
             {resetSuccess ? (
               <div className="text-center py-4">
                 <p className="text-green-600 font-medium mb-2">Check your email</p>
-                <p className="text-sm text-neutral-400">We&apos;ve sent a password reset link to your email address.</p>
+                <p className="text-sm text-neutral-400">We've sent a password reset link to your email address.</p>
                 <button onClick={() => { setShowResetForm(false); setResetSuccess(false); }} className="text-sm text-primary hover:underline mt-4">Back to Login</button>
               </div>
             ) : (
               <form onSubmit={handleResetPassword} className="space-y-4">
-                <p className="text-sm text-neutral-400 mb-4">Enter your email and we&apos;ll send you a link to reset your password.</p>
+                <p className="text-sm text-neutral-400 mb-4">Enter your email and we'll send you a link to reset your password.</p>
                 <div className="space-y-2">
                   <Label htmlFor="reset_email">Email</Label>
                   <Input id="reset_email" name="email" type="email" required placeholder="admin@vaspsystemic.com" />

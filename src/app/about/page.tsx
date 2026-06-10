@@ -47,7 +47,7 @@ export default function AboutPage() {
               Our team of engineers, data scientists, and railway domain experts work tirelessly to build solutions that enhance safety, improve efficiency, and reduce operational costs across the railway ecosystem.
             </p>
             <p className="text-neutral-400 leading-relaxed">
-              With a proven track record of enterprise deployments and a commitment to innovation, we are positioning India&apos;s railway infrastructure for the future.
+              With a proven track record of enterprise deployments and a commitment to innovation, we are positioning India's railway infrastructure for the future.
             </p>
           </motion.div>
           <motion.div
@@ -83,7 +83,7 @@ export default function AboutPage() {
               <Target className="w-10 h-10 text-primary mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-4">Our Mission</h3>
               <p className="text-neutral-400 leading-relaxed">
-                To revolutionize railway operations through intelligent technology solutions that enhance safety, improve efficiency, and enable data-driven decision-making across India&apos;s railway infrastructure.
+                To revolutionize railway operations through intelligent technology solutions that enhance safety, improve efficiency, and enable data-driven decision-making across India's railway infrastructure.
               </p>
             </motion.div>
             <motion.div
@@ -96,7 +96,7 @@ export default function AboutPage() {
               <Eye className="w-10 h-10 text-secondary mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-4">Our Vision</h3>
               <p className="text-neutral-400 leading-relaxed">
-                To be India&apos;s most trusted railway technology partner, setting global benchmarks for AI-driven railway safety, efficiency, and innovation.
+                To be India's most trusted railway technology partner, setting global benchmarks for AI-driven railway safety, efficiency, and innovation.
               </p>
             </motion.div>
           </div>

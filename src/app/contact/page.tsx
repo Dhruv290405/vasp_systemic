@@ -36,12 +36,12 @@ function ContactContent() {
             <div className="lg:col-span-2 space-y-8">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                 <h2 className="text-2xl font-bold text-foreground mb-6">
-                  {isDemo ? "Let Us Show You What&apos;s Possible" : "Let&apos;s Start a Conversation"}
+                  {isDemo ? "Let Us Show You What's Possible" : "Let's Start a Conversation"}
                 </h2>
                 <p className="text-neutral-400 mb-8">
                   {isDemo
                     ? "Fill in your details and our team will reach out to schedule a personalized demo tailored to your requirements."
-                    : "Whether you have a question about our solutions, want to discuss a partnership, or need support — we&apos;re here to help."}
+                    : "Whether you have a question about our solutions, want to discuss a partnership, or need support — we're here to help."}
                 </p>
 
                 <div className="space-y-6">

@@ -131,7 +131,7 @@ export function CareerForm({ positionId, positionTitle }: CareerFormProps) {
       >
         <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
         <h3 className="text-xl font-semibold text-foreground mb-2">Application Submitted</h3>
-        <p className="text-neutral-400">Thank you for applying to {positionTitle}. We&apos;ll review your application and get back to you soon.</p>
+        <p className="text-neutral-400">Thank you for applying to {positionTitle}. We'll review your application and get back to you soon.</p>
       </motion.div>
     );
   }

@@ -34,9 +34,9 @@ export function Footer() {
             </Link>
             <h3 className="text-xl font-bold text-white tracking-tight mb-1">VASP SYSTEMIC</h3>
             <p className="text-white/80 font-medium text-sm mb-2">Railway IoT Solutions</p>
-            <p className="text-secondary text-xs font-medium tracking-wider mb-4">Safety &bull; Comfort &bull; Digital Operations</p>
+            <p className="text-secondary text-xs font-medium tracking-wider mb-4">Safety • Comfort • Digital Operations</p>
             <p className="text-white/60 text-sm leading-relaxed max-w-sm mb-6">
-              Building India&apos;s Intelligent Railway Operations Ecosystem with AI, IoT, and Safety solutions for enterprise and government.
+              Building India's Intelligent Railway Operations Ecosystem with AI, IoT, and Safety solutions for enterprise and government.
             </p>
             <div className="space-y-3">
               <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 text-sm text-white/60 hover:text-secondary transition-colors">
@@ -92,7 +92,7 @@ export function Footer() {
 
         <div className="border-t border-white/10 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-white/40">
-            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
+            © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="text-sm text-white/40 hover:text-white/60 transition-colors">Privacy Policy</Link>

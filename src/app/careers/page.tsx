@@ -55,7 +55,7 @@ export default function CareersPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">Careers at VASP Systemic</h1>
             <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              Join us in building India&apos;s intelligent railway future. We&apos;re looking for passionate minds to transform transportation.
+              Join us in building India's intelligent railway future. We're looking for passionate minds to transform transportation.
             </p>
           </motion.div>
         </div>

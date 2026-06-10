@@ -40,7 +40,7 @@ export function TestimonialsSection() {
             className="relative p-8 rounded-xl border border-border bg-white"
           >
             <Quote className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-sm text-neutral-400 leading-relaxed mb-6">&ldquo;{item.quote}&rdquo;</p>
+            <p className="text-sm text-neutral-400 leading-relaxed mb-6">"{item.quote}"</p>
             <div>
               <div className="font-medium text-foreground text-sm">{item.author}</div>
               <div className="text-xs text-neutral-300 mt-1">{item.role}</div>
