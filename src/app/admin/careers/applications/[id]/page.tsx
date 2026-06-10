@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Mail, Phone, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,11 +14,10 @@ const statusColors: Record<string, "primary" | "secondary" | "success" | "warnin
 
 export default function CandidateDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const [candidate, setCandidate] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
   const [emailStatus, setEmailStatus] = useState<string | null>(null);
+  const pendingRef = useRef(false);
 
   useEffect(() => {
     fetch(`/api/careers/applications/${params.id}`)
@@ -29,20 +28,30 @@ export default function CandidateDetailPage() {
   }, [params.id]);
 
   const updateStatus = async (status: string) => {
-    setUpdating(true);
-    setEmailStatus(null);
-    const res = await fetch("/api/careers/applications", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: params.id, status }),
-    });
-    const result = await res.json();
-    console.log("Status update response:", result);
-    setCandidate((prev: any) => prev ? { ...prev, status: result.status || prev.status } : prev);
-    if (result.emailSent) setEmailStatus("Email sent to candidate");
-    else if (result.emailError) setEmailStatus(`Email failed: ${result.emailError}`);
-    else setEmailStatus("No email sent - SMTP may not be configured");
-    setUpdating(false);
+    if (pendingRef.current) return;
+    pendingRef.current = true;
+
+    setCandidate((prev: any) => prev ? { ...prev, status } : prev);
+    setEmailStatus("Updating...");
+
+    try {
+      const res = await fetch("/api/careers/applications", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: params.id, status }),
+      });
+      const result = await res.json();
+      if (result.status) {
+        setCandidate((prev: any) => prev ? { ...prev, status: result.status } : prev);
+      }
+      if (result.emailSent) setEmailStatus("Email sent to candidate");
+      else if (result.emailError) setEmailStatus(`Email failed: ${result.emailError}`);
+      else setEmailStatus("Status updated");
+    } catch {
+      setEmailStatus("Update failed");
+    } finally {
+      pendingRef.current = false;
+    }
   };
 
   if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
@@ -100,7 +109,6 @@ export default function CandidateDetailPage() {
             <button
               key={s}
               onClick={() => updateStatus(s)}
-              disabled={updating}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 candidate.status === s
                   ? "bg-primary text-white"
@@ -111,7 +119,7 @@ export default function CandidateDetailPage() {
             </button>
           ))}
         {emailStatus && (
-          <p className={`text-sm mt-3 ${emailStatus.includes("sent") ? "text-green-600" : emailStatus.includes("failed") ? "text-red-500" : "text-neutral-400"}`}>
+          <p className={`text-sm mt-3 w-full ${emailStatus.includes("sent") ? "text-green-600" : emailStatus.includes("failed") ? "text-red-500" : "text-neutral-400"}`}>
             {emailStatus}
           </p>
         )}

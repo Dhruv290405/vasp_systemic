@@ -14,23 +14,15 @@ export async function PUT(request: NextRequest) {
   const { data, error } = await supabase.from("career_applications").update(updates).eq("id", id).select().single();
   if (error) return Response.json({ error: error.message }, { status: 500 });
 
-  let emailSent = false;
-  let emailError = "";
-
   if (updates.status && data) {
-    try {
-      const { data: position } = await supabase.from("career_positions").select("title").eq("id", data.position_id).single();
-      const positionTitle = position?.title || "a position at VASP Systemic";
-      await sendEmail({
-        to: data.email,
-        ...statusUpdateEmail({ name: data.name, positionTitle, status: updates.status }),
-      });
-      emailSent = true;
-    } catch (err) {
-      emailError = err instanceof Error ? err.message : "Unknown email error";
-      console.error("Failed to send status update email:", emailError);
-    }
+    const { data: position } = await supabase.from("career_positions").select("title").eq("id", data.position_id).single();
+    const positionTitle = position?.title || "a position at VASP Systemic";
+
+    sendEmail({
+      to: data.email,
+      ...statusUpdateEmail({ name: data.name, positionTitle, status: updates.status }),
+    }).catch((err) => console.error("Status email failed:", err));
   }
 
-  return Response.json({ ...data, emailSent, emailError });
+  return Response.json({ ...data, emailSent: false, emailError: "" });
 }

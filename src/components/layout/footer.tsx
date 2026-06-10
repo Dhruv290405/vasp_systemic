@@ -26,8 +26,8 @@ export function Footer() {
               <Image
                 src="/vasplogogo.png"
                 alt="VASP Systemic"
-                width={2560}
-                height={748}
+                width={280}
+                height={82}
                 priority
                 style={{ imageRendering: "auto", objectFit: "contain", width: "100%", height: "auto" }}
               />

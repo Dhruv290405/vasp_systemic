@@ -19,14 +19,14 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const fetchStats = async () => {
-      const results: Record<string, number> = {};
-      for (const cfg of statConfigs) {
+      const entries = await Promise.all(statConfigs.map(async (cfg) => {
         try {
           const res = await fetch(`/api/${cfg.table}`);
-          if (res.ok) { const data = await res.json(); results[cfg.table] = data.length; }
-        } catch { results[cfg.table] = 0; }
-      }
-      setStats(results);
+          if (res.ok) { const data = await res.json(); return [cfg.table, data.length] as const; }
+        } catch {}
+        return [cfg.table, 0] as const;
+      }));
+      setStats(Object.fromEntries(entries));
       setLoading(false);
     };
     fetchStats();
