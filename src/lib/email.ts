@@ -17,10 +17,11 @@ export async function sendEmail({
     throw new Error("SMTP password is still set to placeholder value");
   }
 
-  const transporter = nodemailer.createTransport({
+  const config = {
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
+    requireTLS: true,
     auth: {
       user: process.env.SMTP_EMAIL,
       pass: (process.env.SMTP_PASSWORD || "").replace(/\s/g, ""),
@@ -28,13 +29,17 @@ export async function sendEmail({
     connectionTimeout: 10000,
     greetingTimeout: 10000,
     socketTimeout: 15000,
-  });
+  };
+
+  const recipient = to || "vaspsystemic@gmail.com";
+
+  const transporter = nodemailer.createTransport(config);
 
   await transporter.verify();
 
   await transporter.sendMail({
     from: `"VASP Systemic" <${process.env.SMTP_EMAIL}>`,
-    to: to || "vaspsystemic@gmail.com",
+    to: recipient,
     subject,
     html,
   });

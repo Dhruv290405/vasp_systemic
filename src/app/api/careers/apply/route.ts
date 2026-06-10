@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Check if already applied for this position
     const checkRes = await fetch(
       `${supabaseUrl}/rest/v1/career_applications?email=eq.${encodeURIComponent(body.email)}&position_id=eq.${encodeURIComponent(body.positionId)}&select=id`,
       {
@@ -49,13 +48,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to submit application" }, { status: 500 });
     }
 
-    sendEmail(careerEmail({
-      ...body,
-      position: body.positionId,
-      resumeUrl: body.resumeUrl,
-    })).catch((err) => console.error("Failed to send application notification email:", err));
+    let emailSent = false;
+    let emailError = "";
+    try {
+      await sendEmail(careerEmail({
+        ...body,
+        position: body.positionId,
+        resumeUrl: body.resumeUrl,
+      }));
+      emailSent = true;
+    } catch (err) {
+      emailError = err instanceof Error ? err.message : "Unknown email error";
+      console.error("Failed to send admin notification:", emailError);
+    }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, emailSent, emailError });
   } catch (err) {
     console.error("Application submit error:", err);
     return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
