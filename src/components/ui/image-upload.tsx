@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, X, Loader2, ImageIcon } from "lucide-react";
+import { X, Loader2, ImageIcon } from "lucide-react";
 
 interface ImageUploadProps {
   value: string;
@@ -34,23 +34,16 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       const formData = new FormData();
       formData.append("file", file, fileName);
 
-      const uploadRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/products/${fileName}`,
-        {
-          method: "POST",
-          headers: {
-            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-          },
-          body: formData,
-        }
-      );
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-      if (!uploadRes.ok) throw new Error("Upload failed");
+      const data = await uploadRes.json();
+      if (!uploadRes.ok || !data.url) throw new Error(data.error || "Upload failed");
 
-      const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${fileName}`;
-      setPreview(publicUrl);
-      onChange(publicUrl);
+      setPreview(data.url);
+      onChange(data.url);
     } catch {
       alert("Failed to upload image");
     } finally {
