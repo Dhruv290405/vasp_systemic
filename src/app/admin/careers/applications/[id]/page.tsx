@@ -37,8 +37,11 @@ export default function CandidateDetailPage() {
       body: JSON.stringify({ id: params.id, status }),
     });
     const result = await res.json();
+    console.log("Status update response:", result);
     setCandidate((prev: any) => prev ? { ...prev, status: result.status || prev.status } : prev);
-    setEmailStatus(result.emailSent ? "Email sent to candidate" : result.emailError ? `Email failed: ${result.emailError}` : null);
+    if (result.emailSent) setEmailStatus("Email sent to candidate");
+    else if (result.emailError) setEmailStatus(`Email failed: ${result.emailError}`);
+    else setEmailStatus("No email sent - SMTP may not be configured");
     setUpdating(false);
   };
 
