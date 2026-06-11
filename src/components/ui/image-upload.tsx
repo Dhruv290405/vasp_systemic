@@ -68,6 +68,7 @@ export function ImageUpload({ values, onChange }: ImageUploadProps) {
                 src={url}
                 alt={`Image ${i + 1}`}
                 className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
               <button
                 type="button"
