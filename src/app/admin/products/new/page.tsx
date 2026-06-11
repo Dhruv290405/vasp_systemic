@@ -161,15 +161,16 @@ export default function NewProductPage() {
         <div className={sectionClass}>
           <h2 className="text-lg font-bold text-foreground">Media</h2>
           <div className="space-y-2"><Label>Product Images</Label>
-            {images.map((url, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <Input value={url} onChange={(e) => { const next = [...images]; next[i] = e.target.value; setImages(next); }} placeholder="Image URL" />
-                <button type="button" onClick={() => setImages(images.filter((_, j) => j !== i))} className="p-2 text-red-500"><X className="w-4 h-4" /></button>
-              </div>
-            ))}
-            <button type="button" onClick={() => setImages([...images, ""])} className="flex items-center gap-1 text-sm text-primary"><Plus className="w-3 h-3" /> Add Image URL</button>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {images.map((url, i) => (
+                <div key={i} className="flex items-center gap-2 bg-neutral rounded-lg px-3 py-1.5 text-sm border border-border">
+                  <span className="text-neutral-400 truncate max-w-[200px]">{url.split("/").pop()}</span>
+                  <button type="button" onClick={() => setImages(images.filter((_, j) => j !== i))} className="text-red-500 hover:text-red-600"><X className="w-3.5 h-3.5" /></button>
+                </div>
+              ))}
+            </div>
+            <ImageUpload values={images} onChange={setImages} />
           </div>
-          <div className="space-y-2"><Label>Or upload images directly</Label><ImageUpload value={images[0] || ""} onChange={(url) => setImages([url, ...images.filter((_, i) => i > 0)])} /></div>
         </div>
 
         <div className={sectionClass}>

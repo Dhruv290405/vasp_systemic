@@ -258,12 +258,12 @@ export default function ProductDetailClient({ product, slug }: { product: any; s
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">Gallery</h2>
             </motion.div>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {images.map((url: string, i: number) => (
                 <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className="rounded-xl overflow-hidden border border-border"
+                  className="rounded-xl overflow-hidden border border-border aspect-square bg-neutral"
                 >
-                  <Image src={url} alt={`${product.name} ${i + 1}`} width={400} height={300} className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500" />
+                  <Image src={url} alt={`${product.name} ${i + 1}`} width={400} height={400} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </motion.div>
               ))}
             </div>
