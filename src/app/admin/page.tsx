@@ -13,23 +13,33 @@ const statConfigs = [
   { label: "Demo Requests", icon: Users, color: "text-teal-600 bg-teal-100", table: "demo-requests" },
 ];
 
+interface AnalyticsData {
+  totalViews: number; todayViews: number; weekViews: number; monthViews: number;
+  topPages: { path: string; views: number }[];
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const entries = await Promise.all(statConfigs.map(async (cfg) => {
-        try {
-          const res = await fetch(`/api/${cfg.table}`);
-          if (res.ok) { const data = await res.json(); return [cfg.table, data.length] as const; }
-        } catch {}
-        return [cfg.table, 0] as const;
-      }));
-      setStats(Object.fromEntries(entries));
+    const fetchAll = async () => {
+      const [statsRes, analyticsRes] = await Promise.all([
+        Promise.all(statConfigs.map(async (cfg) => {
+          try {
+            const res = await fetch(`/api/${cfg.table}`);
+            if (res.ok) { const data = await res.json(); return [cfg.table, data.length] as const; }
+          } catch {}
+          return [cfg.table, 0] as const;
+        })),
+        fetch("/api/analytics/stats").then(r => r.json()).catch(() => null),
+      ]);
+      setStats(Object.fromEntries(statsRes));
+      setAnalytics(analyticsRes);
       setLoading(false);
     };
-    fetchStats();
+    fetchAll();
   }, []);
 
   return (
@@ -65,14 +75,37 @@ export default function AdminDashboard() {
         })}
       </div>
 
+      {/* Analytics Section */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Today", value: analytics?.todayViews, icon: Activity },
+          { label: "This Week", value: analytics?.weekViews, icon: Activity },
+          { label: "This Month", value: analytics?.monthViews, icon: Activity },
+          { label: "All Time", value: analytics?.totalViews, icon: Activity },
+        ].map((item) => (
+          <div key={item.label} className="p-4 rounded-xl bg-white border border-border">
+            <div className="text-sm text-neutral-400">{item.label}</div>
+            <div className="text-2xl font-bold text-foreground mt-1">
+              {analytics === null ? "..." : (item.value ?? 0).toLocaleString()}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="p-6 rounded-xl bg-white border border-border">
-          <h2 className="font-semibold text-foreground mb-4">Recent Activity</h2>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Activity className="w-4 h-4 text-neutral-300" />
-              <p className="text-sm text-neutral-400">Data loaded from Supabase database.</p>
-            </div>
+          <h2 className="font-semibold text-foreground mb-4">Top Pages (This Week)</h2>
+          <div className="space-y-2">
+            {!analytics || analytics.topPages.length === 0 ? (
+              <p className="text-sm text-neutral-400">No data yet. Page views will appear once visitors browse the site.</p>
+            ) : (
+              analytics.topPages.map((p) => (
+                <div key={p.path} className="flex items-center justify-between py-1.5 border-b border-border last:border-0">
+                  <span className="text-sm text-neutral-400">{p.path || "/"}</span>
+                  <span className="text-sm font-medium text-foreground">{p.views}</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

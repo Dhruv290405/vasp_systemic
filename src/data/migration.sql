@@ -15,3 +15,23 @@ WITH CHECK (bucket_id = 'products');
 CREATE POLICY IF NOT EXISTS "anon_select_products" ON storage.objects
 FOR SELECT TO anon
 USING (bucket_id = 'products');
+
+-- Page views analytics table
+CREATE TABLE IF NOT EXISTS page_views (
+  id BIGSERIAL PRIMARY KEY,
+  path TEXT NOT NULL,
+  referrer TEXT DEFAULT '',
+  user_agent TEXT DEFAULT '',
+  ip_hash TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Allow anon key to insert page views (no auth needed for tracking)
+ALTER TABLE page_views ENABLE ROW LEVEL SECURITY;
+CREATE POLICY IF NOT EXISTS "anon_insert_page_views" ON page_views
+FOR INSERT TO anon
+WITH CHECK (true);
+
+-- Index for faster queries
+CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at);
+CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path);
