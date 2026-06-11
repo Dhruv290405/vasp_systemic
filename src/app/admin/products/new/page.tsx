@@ -68,10 +68,16 @@ export default function NewProductPage() {
         cta_link: form.get("cta_link"),
       },
     };
-    const res = await fetch("/api/products", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    });
-    if (!res.ok) { const err = await res.json(); setError(err.error || "Failed to save"); setLoading(false); return; }
+    let res, data;
+    try {
+      res = await fetch("/api/products", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+      });
+      data = await res.json();
+    } catch (e) {
+      setError("Network error — check console"); setLoading(false); return;
+    }
+    if (!res.ok) { setError(data?.error || `HTTP ${res.status}`); setLoading(false); return; }
     router.push("/admin/products");
   };
 

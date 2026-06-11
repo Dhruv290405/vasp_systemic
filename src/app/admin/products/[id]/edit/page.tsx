@@ -78,8 +78,14 @@ export default function EditProductPage() {
         cta_link: fd.get("cta_link"),
       },
     };
-    const res = await fetch(`/api/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (!res.ok) { const err = await res.json(); setError(err.error || "Failed to save"); setSaving(false); return; }
+    let res, data;
+    try {
+      res = await fetch(`/api/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      data = await res.json();
+    } catch (e) {
+      setError("Network error — check console"); setSaving(false); return;
+    }
+    if (!res.ok) { setError(data?.error || `HTTP ${res.status}`); setSaving(false); return; }
     router.push("/admin/products");
   };
 
