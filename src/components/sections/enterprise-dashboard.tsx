@@ -176,7 +176,7 @@ export function EnterpriseDashboard() {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#27C93F]" />
                 <span className="text-[11px] font-bold text-white uppercase tracking-wider">
-                  VASP MCC Platform
+                  VASP Operations Suite
                 </span>
                 <span className="text-[9px] text-white/30 hidden sm:inline">v3.2.1</span>
               </div>
