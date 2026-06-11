@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SOLUTIONS } from "@/lib/constants";
 
-const NAV_ITEMS = [
+const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   {
@@ -21,19 +21,6 @@ const NAV_ITEMS = [
       href: `/solutions/${s.slug}`,
       description: s.description,
     })),
-  },
-  {
-    label: "Products",
-    href: "/products",
-    dropdown: [
-      { label: "VASP IoT Gateway", href: "/products/vasp-iot-gateway", description: "Industrial IoT gateway for asset connectivity" },
-      { label: "VASP Sensor Array", href: "/products/vasp-sensor-array", description: "Comprehensive sensor suite for monitoring" },
-      { label: "VASP Analytics Platform", href: "/products/vasp-analytics-platform", description: "Enterprise AI and analytics platform" },
-      { label: "VASP Safety Monitor", href: "/products/vasp-safety-monitor", description: "AI-powered safety intelligence" },
-      { label: "VASP Edge Controller", href: "/products/vasp-edge-controller", description: "Ruggedized edge computing device" },
-      { label: "VASP Operations Hub", href: "/products/vasp-operations-hub", description: "Centralized command and control" },
-      { label: "MCC Platform", href: "/products/mcc-platform", description: "Railway operations digitization platform" },
-    ],
   },
   { label: "Industries", href: "/industries" },
   { label: "Technology", href: "/technology" },
@@ -75,7 +62,7 @@ function NavLink({
   onLeave,
   onClick,
 }: {
-  item: (typeof NAV_ITEMS)[number];
+  item: any;
   index: number;
   scrolled: boolean;
   openIndex: number | null;
@@ -134,7 +121,7 @@ function NavLink({
               className="absolute top-full left-1/2 -translate-x-1/2 pt-2"
             >
               <div className="bg-white rounded-xl shadow-xl border border-border py-2 min-w-[240px] w-max max-w-[320px]">
-                {item.dropdown!.map((d) => (
+                {item.dropdown!.map((d: any) => (
                   <Link
                     key={d.label}
                     href={d.href}
@@ -142,7 +129,7 @@ function NavLink({
                     className="block px-5 py-3 hover:bg-neutral transition-colors group/dd"
                   >
                     <div className="text-sm font-medium text-foreground group-hover/dd:text-primary transition-colors">{d.label}</div>
-                    {"description" in d && d.description && (
+                    {d.description && (
                       <div className="text-xs text-neutral-400 mt-0.5 line-clamp-1">{d.description}</div>
                     )}
                   </Link>
@@ -160,7 +147,40 @@ export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [productItems, setProductItems] = useState<{ label: string; href: string; description: string }[]>([]);
   const { openIndex, onEnter, onLeave, setOpenIndex } = useDropdown();
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then(r => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const items = data
+            .filter((p: any) => p.published)
+            .map((p: any) => {
+              const ext = p.extended_data || {};
+              const slug = p.slug || p.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+              return {
+                label: ext.hero_title || p.name,
+                href: `/products/${slug}`,
+                description: ext.subheadline || p.description || "",
+              };
+            });
+          setProductItems(items);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const NAV_ITEMS = [
+    ...BASE_NAV_ITEMS.slice(0, 2),
+    {
+      label: "Products",
+      href: "/products",
+      dropdown: productItems.length > 0 ? productItems : [{ label: "View All Products", href: "/products", description: "Browse our product catalog" }],
+    },
+    ...BASE_NAV_ITEMS.slice(2),
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -264,7 +284,7 @@ export function Navbar() {
                           <ChevronDown className="w-3.5 h-3.5 transition-transform group-open:rotate-180" />
                         </summary>
                         <div className="ml-4 mt-1 space-y-0.5 pb-2">
-                          {item.dropdown!.map((d) => (
+                          {item.dropdown!.map((d: any) => (
                             <Link
                               key={d.label}
                               href={d.href}

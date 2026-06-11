@@ -87,7 +87,7 @@ export function HeroSection() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border">
                 <Image
                   src="/heroic_dashboard.jpg"
-                  alt="VASP MCC Platform Dashboard"
+                  alt="VASP Systemic Platform Dashboard"
                   width={1200}
                   height={800}
                   className="w-full h-auto"
