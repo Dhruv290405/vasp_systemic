@@ -15,6 +15,7 @@ export default function EditProductPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState<any>({});
   const [images, setImages] = useState<string[]>([]);
   const [trustBadges, setTrustBadges] = useState<string[]>([]);
@@ -78,8 +79,8 @@ export default function EditProductPage() {
       },
     };
     const res = await fetch(`/api/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (res.ok) router.push("/admin/products");
-    setSaving(false);
+    if (!res.ok) { const err = await res.json(); setError(err.error || "Failed to save"); setSaving(false); return; }
+    router.push("/admin/products");
   };
 
   const inputClass = "w-full h-11 rounded-lg border border-border bg-white px-4 text-sm";
@@ -191,6 +192,7 @@ export default function EditProductPage() {
           </div>
         </div>
 
+        {error && <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">{error}</div>}
         <div className="flex justify-end gap-3 pt-4">
           <Link href="/admin/products"><Button variant="outline" type="button">Cancel</Button></Link>
           <Button variant="primary" type="submit" disabled={saving}>

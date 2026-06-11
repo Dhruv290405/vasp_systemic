@@ -13,6 +13,7 @@ import { Loader2, ArrowLeft, Plus, X } from "lucide-react";
 export default function NewProductPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [trustBadges, setTrustBadges] = useState<string[]>([]);
   const [problemsSolved, setProblemsSolved] = useState<string[]>([]);
@@ -70,8 +71,8 @@ export default function NewProductPage() {
     const res = await fetch("/api/products", {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
     });
-    if (res.ok) router.push("/admin/products");
-    setLoading(false);
+    if (!res.ok) { const err = await res.json(); setError(err.error || "Failed to save"); setLoading(false); return; }
+    router.push("/admin/products");
   };
 
   const inputClass = "w-full h-11 rounded-lg border border-border bg-white px-4 text-sm";
@@ -181,6 +182,7 @@ export default function NewProductPage() {
           </div>
         </div>
 
+        {error && <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">{error}</div>}
         <div className="flex justify-end gap-3 pt-4">
           <Link href="/admin/products"><Button variant="outline" type="button">Cancel</Button></Link>
           <Button variant="primary" type="submit" disabled={loading}>
