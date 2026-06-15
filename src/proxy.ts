@@ -34,27 +34,15 @@ export async function proxy(request: NextRequest) {
   const isLoginPage = pathname === "/admin/login";
   const isAdminRoute = pathname.startsWith("/admin");
 
-  console.log("=== PROXY DEBUG ===", {
-    pathname,
-    isAdminRoute,
-    isLoginPage,
-    hasUser: !!user,
-    userEmail: user?.email,
-    requestUrl: request.url,
-    nextUrl: request.nextUrl.toString(),
-  });
-
   if (isAdminRoute && !isLoginPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
-    console.log("PROXY: Redirecting to login:", url.toString());
     return NextResponse.redirect(url);
   }
 
   if (isLoginPage && user && ALLOWED_EMAILS.includes(user.email || "")) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
-    console.log("PROXY: Redirecting to admin:", url.toString());
     return NextResponse.redirect(url);
   }
 

@@ -10,67 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { BLOG_CATEGORIES } from "@/lib/constants";
 
-const fallbackPosts = [
-  {
-    title: "How AI is Revolutionizing Predictive Maintenance in Indian Railways",
-    slug: "ai-predictive-maintenance-indian-railways",
-    excerpt: "Explore how artificial intelligence and machine learning are transforming maintenance practices across Indian Railways.",
-    category: "Artificial Intelligence",
-    author: "VASP Systemic Team",
-    date: "2025-12-15",
-    image: "bg-gradient-to-br from-primary/20 to-primary/5",
-  },
-  {
-    title: "The Role of IoT in Modern Railway Safety Systems",
-    slug: "iot-railway-safety-systems",
-    excerpt: "Discover how Internet of Things technology is creating safer railway environments through real-time monitoring.",
-    category: "Railway Technology",
-    author: "VASP Systemic Team",
-    date: "2025-11-28",
-    image: "bg-gradient-to-br from-secondary/20 to-secondary/5",
-  },
-  {
-    title: "Digital Twin Technology for Railway Infrastructure Management",
-    slug: "digital-twin-railway-infrastructure",
-    excerpt: "Learn how digital twin technology is enabling predictive insights for railway infrastructure maintenance.",
-    category: "Infrastructure Technology",
-    author: "VASP Systemic Team",
-    date: "2025-11-10",
-    image: "bg-gradient-to-br from-primary/20 to-secondary/5",
-  },
-  {
-    title: "Edge Computing in Railway Operations: A Technical Overview",
-    slug: "edge-computing-railway-operations",
-    excerpt: "An in-depth look at how edge computing is enabling real-time processing in railway environments.",
-    category: "Railway Technology",
-    author: "VASP Systemic Team",
-    date: "2025-10-22",
-    image: "bg-gradient-to-br from-blue-100 to-blue-50",
-  },
-  {
-    title: "Safety Engineering Best Practices for Modern Railway Systems",
-    slug: "safety-engineering-railway-systems",
-    excerpt: "Understanding the critical safety engineering principles for modern railway system design.",
-    category: "Safety Engineering",
-    author: "VASP Systemic Team",
-    date: "2025-10-05",
-    image: "bg-gradient-to-br from-green-100 to-green-50",
-  },
-  {
-    title: "The Future of Freight Rail: Automation and Smart Logistics",
-    slug: "future-freight-rail-automation",
-    excerpt: "How automation technologies and smart logistics platforms are reshaping the freight rail industry.",
-    category: "Industrial IoT",
-    author: "VASP Systemic Team",
-    date: "2025-09-18",
-    image: "bg-gradient-to-br from-orange-100 to-orange-50",
-  },
-];
-
 const ITEMS_PER_PAGE = 6;
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState(fallbackPosts);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
@@ -88,17 +32,14 @@ export default function BlogPage() {
               excerpt: p.excerpt || "",
               category: p.category || "General",
               author: p.author || "VASP Systemic Team",
-              date: p.created_at?.split("T")[0] || "2025-01-01",
+              date: p.created_at?.split("T")[0] || "",
               image: p.image_url ? `bg-cover bg-center` : "bg-gradient-to-br from-primary/20 to-primary/5",
             }));
-          setPosts(prev => {
-            const existingSlugs = new Set(prev.map(p => p.slug));
-            const newItems = mapped.filter(p => !existingSlugs.has(p.slug));
-            return [...prev, ...newItems];
-          });
+          setPosts(mapped);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = posts.filter((post) => {
@@ -158,9 +99,13 @@ export default function BlogPage() {
           </div>
         </div>
 
-        {filtered.length === 0 ? (
+        {loading ? (
           <div className="text-center py-20">
-            <p className="text-neutral-400">No articles found matching your criteria.</p>
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-neutral-400">{posts.length === 0 ? "No blog posts published yet. Check back soon." : "No articles found matching your criteria."}</p>
           </div>
         ) : (
           <>

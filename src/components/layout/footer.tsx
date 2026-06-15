@@ -1,11 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
-import { COMPANY, SOLUTIONS, INDUSTRIES } from "@/lib/constants";
+import { COMPANY } from "@/lib/constants";
 
 const footerLinks = {
-  solutions: SOLUTIONS.slice(0, 4).map((s) => ({ label: s.title, href: `/solutions/${s.slug}` })),
-  industries: INDUSTRIES.map((i) => ({ label: i.name, href: `/industries/${i.slug}` })),
+  solutions: [
+    { label: "Predictive Maintenance", href: "/solutions/predictive-maintenance" },
+    { label: "IoT Monitoring", href: "/solutions/railway-iot-platform" },
+    { label: "Safety Systems", href: "/solutions/safety-intelligence-system" },
+    { label: "Asset Monitoring", href: "/solutions/asset-monitoring" },
+  ],
+  industries: [
+    { label: "Indian Railways", href: "/industries/indian-railways" },
+    { label: "Metro Rail", href: "/industries/metro-rail" },
+    { label: "Industrial IoT", href: "/industries/industrial-iot" },
+    { label: "Smart Infrastructure", href: "/industries/smart-infrastructure" },
+  ],
   company: [
     { label: "About Us", href: "/about" },
     { label: "Technology", href: "/technology" },
@@ -95,8 +105,8 @@ export function Footer() {
             © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-sm text-white/40 hover:text-white/60 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-sm text-white/40 hover:text-white/60 transition-colors">Terms of Service</Link>
+            <span className="text-sm text-white/40">RDSO Compliant</span>
+            <span className="text-sm text-white/40">ISO 9001:2024</span>
           </div>
         </div>
       </div>

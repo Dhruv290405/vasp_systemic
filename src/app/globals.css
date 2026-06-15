@@ -4,10 +4,15 @@
 @theme inline {
   --color-primary: #0A2A88;
   --color-primary-light: #1E40AF;
+  --color-primary-lighter: #3B5FD9;
   --color-primary-dark: #071B5C;
+  --color-primary-darker: #040F33;
   --color-secondary: #F97316;
   --color-secondary-light: #FB923C;
+  --color-secondary-lighter: #FED7AA;
   --color-secondary-dark: #EA580C;
+  --color-accent: #10B981;
+  --color-accent-light: #34D399;
   --color-background: #FFFFFF;
   --color-foreground: #0A0A0A;
   --color-neutral: #F5F7FA;
@@ -18,17 +23,32 @@
   --color-neutral-500: #4B5563;
   --color-neutral-600: #374151;
   --color-neutral-700: #1F2937;
+  --color-neutral-800: #111827;
   --color-muted: #F0F2F5;
   --color-border: #E2E8F0;
   --color-card: #FFFFFF;
   --color-card-foreground: #0A0A0A;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(10,42,136,0.15);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     background: var(--color-background);
@@ -39,6 +59,9 @@
     background: #0A2A88;
     color: white;
   }
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
@@ -48,13 +71,70 @@
   .gradient-primary {
     background: linear-gradient(135deg, #0A2A88 0%, #1E40AF 100%);
   }
+  .gradient-primary-subtle {
+    background: linear-gradient(135deg, #0A2A88 0%, #071B5C 100%);
+  }
   .gradient-secondary {
     background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
   }
   .gradient-dark {
-    background: linear-gradient(135deg, #071B5C 0%, #0A2A88 100%);
+    background: linear-gradient(135deg, #040F33 0%, #071B5C 50%, #0A2A88 100%);
   }
   .gradient-hero {
-    background: linear-gradient(135deg, #0A2A88 0%, #071B5C 50%, #0A2A88 100%);
+    background: linear-gradient(165deg, #040F33 0%, #071B5C 40%, #0A2A88 100%);
+  }
+  .gradient-hero-accent {
+    background: linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(10,42,136,0.05) 100%);
+  }
+  .gradient-card {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%);
+  }
+  .gradient-section {
+    background: linear-gradient(180deg, #F5F7FA 0%, #FFFFFF 50%, #F5F7FA 100%);
+  }
+  .text-gradient {
+    background: linear-gradient(135deg, #0A2A88 0%, #1E40AF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glass-effect {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-effect-dark {
+    background: rgba(10,42,136,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle at 1px 1px, #0A2A88 1px, transparent 0);
+    background-size: 32px 32px;
+  }
+  .bg-grid-pattern {
+    background-image: linear-gradient(rgba(10,42,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,42,136,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }

@@ -26,6 +26,7 @@ type Position = { id: string; title: string; department: string; location: strin
 
 export default function CareersPage() {
   const [positions, setPositions] = useState<Position[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/careers/positions")
@@ -45,7 +46,8 @@ export default function CareersPage() {
             if (mapped.length) setPositions(mapped);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -86,6 +88,15 @@ export default function CareersPage() {
 
       <SectionWrapper>
         <SectionHeader title="Open Positions" subtitle="Explore current opportunities and find your place in our team." />
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          </div>
+        ) : positions.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-neutral-400">No open positions at the moment. Check back later or follow us on LinkedIn for updates.</p>
+          </div>
+        ) : (
         <div className="grid lg:grid-cols-2 gap-6 mb-12">
           {positions.map((position, index) => (
             <motion.div
@@ -116,6 +127,7 @@ export default function CareersPage() {
             </motion.div>
           ))}
         </div>
+        )}
       </SectionWrapper>
 
       <CTASection />

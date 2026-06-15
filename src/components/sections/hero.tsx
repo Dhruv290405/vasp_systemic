@@ -3,103 +3,118 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Radio, Shield, Wrench, Settings } from "lucide-react";
+import {
+  ArrowRight, Shield, Radio, LineChart, Wrench, Settings,
+  ChevronRight, BarChart3, Award, Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY } from "@/lib/constants";
 
 const trustIndicators = [
-  { icon: Brain, label: "AI Powered Intelligence" },
-  { icon: Radio, label: "IoT Sensors" },
-  { icon: Shield, label: "Safety First" },
-  { icon: Wrench, label: "Predictive Maintenance" },
-  { icon: Settings, label: "Operational Excellence" },
+  { icon: Shield, label: "RDSO Compliant", sub: "Safety Standards" },
+  { icon: Radio, label: "IoT Enabled", sub: "Real-time Monitoring" },
+  { icon: LineChart, label: "AI Powered", sub: "Predictive Analytics" },
+  { icon: Wrench, label: "Railway Grade", sub: "Enterprise Reliability" },
+  { icon: Settings, label: "25+ Depots", sub: "Production Deployed" },
 ];
 
 export function HeroSection() {
   return (
     <>
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #0A2A88 1px, transparent 0)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#0A2A88]/[0.02] to-transparent" />
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40" />
+        <div className="absolute top-0 right-0 w-[45%] h-full bg-gradient-to-bl from-primary/[0.03] to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-neutral to-transparent pointer-events-none" />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-40 w-full">
-          <div className="grid lg:grid-cols-[40%_60%] gap-8 lg:gap-12 items-center">
-            {/* LEFT SIDE (40%) */}
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-44 w-full">
+          <div className="grid lg:grid-cols-[42%_58%] gap-10 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0A2A88]/5 border border-[#0A2A88]/10 mb-4 lg:mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
-                <span className="text-[10px] lg:text-xs font-semibold text-[#0A2A88] uppercase tracking-wider">Enterprise Railway Technology</span>
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-5 lg:mb-7">
+                <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <span className="text-[11px] lg:text-xs font-semibold text-primary uppercase tracking-[0.12em]">
+                  Enterprise Railway Technology
+                </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0A2A88] leading-tight">
+              <h1 className="text-[clamp(1.75rem,5vw,3.75rem)] font-bold text-primary leading-[1.08] tracking-tight">
                 {COMPANY.tagline}
               </h1>
 
-              <p className="mt-4 lg:mt-5 text-sm sm:text-base md:text-lg text-neutral-500 max-w-lg leading-relaxed">
-                AI + IoT Powered Solutions for Safer, Smarter and More Efficient Railway Operations.
+              <p className="mt-5 lg:mt-6 text-sm sm:text-base lg:text-lg text-neutral-500 max-w-lg leading-relaxed">
+                AI + IoT Powered Solutions for Safer, Smarter and More Efficient Railway Operations — trusted by Indian Railways and metro rail authorities.
               </p>
 
-              <div className="mt-6 lg:mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 lg:mt-10 flex flex-wrap gap-4">
                 <Link href="/contact?type=demo">
-                  <button className="px-5 lg:px-6 py-2.5 lg:py-3 text-xs sm:text-sm font-bold rounded-lg bg-[#F97316] text-white hover:bg-[#e56710] transition-all duration-200 shadow-md hover:shadow-lg">
-                    Request Demo
-                    <ArrowRight className="ml-2 h-3.5 w-3.5 lg:h-4 lg:w-4 inline-block" />
+                  <button className="group px-6 lg:px-7 py-3 lg:py-3.5 text-sm font-bold rounded-lg bg-secondary text-white hover:bg-secondary-dark transition-all duration-200 shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 active:scale-[0.98]">
+                    <span className="flex items-center gap-2">
+                      Request Demo
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    </span>
                   </button>
                 </Link>
                 <Link href="/contact">
-                  <button className="px-5 lg:px-6 py-2.5 lg:py-3 text-xs sm:text-sm font-semibold rounded-lg border-2 border-[#0A2A88] text-[#0A2A88] hover:bg-[#0A2A88] hover:text-white transition-all duration-200">
+                  <button className="px-6 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded-lg border-2 border-primary/20 text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 active:scale-[0.98]">
                     Contact Sales
+                  </button>
+                </Link>
+                <Link href="/case-studies">
+                  <button className="px-6 lg:px-7 py-3 lg:py-3.5 text-sm font-medium rounded-lg text-neutral-400 hover:text-primary hover:bg-primary/5 transition-all duration-200">
+                    <span className="flex items-center gap-1.5">
+                      Case Studies
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
                   </button>
                 </Link>
               </div>
 
-              {/* Trust Indicators */}
-              <div className="mt-8 lg:mt-12 grid grid-cols-2 sm:grid-cols-3 gap-2 lg:gap-3">
+              <div className="mt-10 lg:mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
                 {trustIndicators.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.label} className="flex items-center gap-2 px-2.5 lg:px-3 py-2 lg:py-2.5 rounded-lg bg-[#0A2A88]/[0.03] border border-[#0A2A88]/[0.06]">
-                      <Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#F97316] shrink-0" />
-                      <span className="text-[10px] lg:text-[11px] font-semibold text-neutral-500 leading-tight">{item.label}</span>
+                    <div key={item.label} className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-primary/[0.02] border border-primary/[0.06] hover:bg-primary/[0.04] hover:border-primary/[0.10] transition-colors">
+                      <div className="p-1.5 rounded-md bg-secondary/10 shrink-0">
+                        <Icon className="w-3.5 h-3.5 text-secondary" />
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-semibold text-neutral-600 leading-tight">{item.label}</div>
+                        <div className="text-[10px] text-neutral-400 leading-tight">{item.sub}</div>
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </motion.div>
 
-            {/* RIGHT SIDE (60%) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="hidden lg:block relative"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border">
-                <Image
-                  src="/heroic_dashboard.jpg"
-                  alt="VASP Systemic Platform Dashboard"
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto"
-                  priority
-                />
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent rounded-3xl blur-2xl" />
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-black/5">
+                  <Image
+                    src="/heroic_dashboard.jpg"
+                    alt="VASP Systemic Platform Dashboard"
+                    width={1200}
+                    height={800}
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
+                <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-secondary/10 rounded-full blur-xl" />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Bottom Metrics Strip */}
       <MetricsStripSection />
     </>
   );
@@ -107,28 +122,35 @@ export function HeroSection() {
 
 function MetricsStripSection() {
   const metrics = [
-    { value: "20,000+", label: "Trains Monitored" },
-    { value: "50,000+", label: "Workers Managed" },
-    { value: "98%", label: "Compliance Rate" },
-    { value: "250+", label: "Depots Covered" },
-    { value: "1M+", label: "Daily Transactions" },
+    { value: "20,000+", label: "Trains Monitored", desc: "Across Indian Railways" },
+    { value: "50,000+", label: "Workforce Managed", desc: "Daily Operations" },
+    { value: "98%", label: "Compliance Rate", desc: "RDSO Standards" },
+    { value: "250+", label: "Depots Covered", desc: "Production Deployed" },
+    { value: "1M+", label: "Daily Transactions", desc: "System Processing" },
   ];
 
   return (
-    <section className="relative bg-white border-b border-border">
+    <section className="relative bg-white border-y border-border/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-border border-x border-border">
+        <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-border/60 border-x border-border/60">
           {metrics.map((metric, i) => (
             <motion.div
               key={metric.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="py-5 md:py-8 px-2 md:px-4 text-center"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="relative py-6 md:py-9 px-3 md:px-5 text-center group hover:bg-primary/[0.01] transition-colors"
             >
-              <div className="text-lg sm:text-xl md:text-3xl font-bold text-[#0A2A88]">{metric.value}</div>
-              <div className="text-[10px] sm:text-xs md:text-sm text-neutral-400 mt-1 font-medium leading-tight">{metric.label}</div>
+              <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+                {metric.value}
+              </div>
+              <div className="text-xs sm:text-sm text-neutral-500 mt-1 font-semibold">
+                {metric.label}
+              </div>
+              <div className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
+                {metric.desc}
+              </div>
             </motion.div>
           ))}
         </div>

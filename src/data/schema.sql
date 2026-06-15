@@ -190,35 +190,35 @@ CREATE POLICY "Public can insert career applications"
   ON career_applications FOR INSERT
   WITH CHECK (true);
 
--- RLS Policies: Admin full access
+-- RLS Policies: Admin full access (email-restricted)
 CREATE POLICY "Admin full access contacts"
   ON contacts FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access demo_requests"
   ON demo_requests FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access career_applications"
   ON career_applications FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access blog_posts"
   ON blog_posts FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access products"
   ON products FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access case_studies"
   ON case_studies FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access newsletter_subscribers"
   ON newsletter_subscribers FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));
 
 CREATE POLICY "Admin full access career_positions"
   ON career_positions FOR ALL
-  USING (auth.role() = 'authenticated');
+  USING (auth.jwt() ->> 'email' IN ('vaspsystemic@gmail.com', 'dhruvtiwari864@gmail.com'));

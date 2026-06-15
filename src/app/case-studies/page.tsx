@@ -9,63 +9,9 @@ import { CTASection } from "@/components/sections/cta";
 const iconMap: Record<string, any> = { TrendingUp, Clock, Shield, BarChart3 };
 const iconKeys = ["TrendingUp", "Clock", "Shield", "BarChart3"];
 
-const fallbackStudies = [
-  {
-    title: "Predictive Maintenance for Indian Railways Locomotive Fleet",
-    client: "Indian Railways", industry: "Railway",
-    problem: "Indian Railways faced frequent unscheduled downtime due to locomotive failures...",
-    solution: "Implemented VASP Predictive Maintenance platform with IoT sensors on critical locomotive components...",
-    technology: ["IoT Sensors", "Machine Learning", "Edge Computing", "Real-time Analytics", "Cloud Platform"],
-    implementation: "Deployed across 500+ locomotives over 12 months...",
-    results: "60% reduction in unplanned failures, 45% decrease in maintenance costs...",
-    impact: "The solution transformed maintenance operations from reactive to predictive...",
-    metrics: { "Failures Reduced": "60%", "Cost Savings": "45%", "Availability": "99%", "ROI": "300% in 18 months" },
-    gradient: "from-primary/20 to-primary/5",
-    iconName: "TrendingUp",
-  },
-  {
-    title: "IoT-Based Intelligent Coach Monitoring for Metro Rail",
-    client: "Metro Rail Corporation", industry: "Metro Rail",
-    problem: "Metro operations lacked real-time visibility into coach conditions...",
-    solution: "Deployed comprehensive IoT sensor network across metro coaches...",
-    technology: ["IoT Sensors", "Edge Gateways", "Cloud Analytics", "Mobile Dashboard", "Automated Alerts"],
-    implementation: "Implemented across 200+ metro coaches...",
-    results: "40% energy savings, 35% reduction in maintenance interventions...",
-    impact: "Enhanced passenger experience with optimal climate control...",
-    metrics: { "Energy Savings": "40%", "Maintenance Reduction": "35%", "Passenger Satisfaction": "+28%", "Response Time": "-60%" },
-    gradient: "from-secondary/20 to-secondary/5",
-    iconName: "Clock",
-  },
-  {
-    title: "AI-Powered Safety Intelligence for Level Crossing Protection",
-    client: "Government Railway Organization", industry: "Railway Safety",
-    problem: "Level crossings faced high accident rates due to unauthorized crossing...",
-    solution: "Implemented VASP Safety Intelligence system with AI computer vision cameras...",
-    technology: ["Computer Vision", "Radar Sensors", "AI/ML", "Edge Processing", "Automated Alerts"],
-    implementation: "Deployed at 150 high-risk level crossings...",
-    results: "70% reduction in safety incidents, 90% faster incident response...",
-    impact: "The system has prevented numerous potential accidents...",
-    metrics: { "Incident Reduction": "70%", "Response Time": "-90%", "Compliance": "100%", "Sites Covered": "150+" },
-    gradient: "from-primary/20 to-secondary/5",
-    iconName: "Shield",
-  },
-  {
-    title: "Comprehensive Asset Monitoring for Freight Rail Operations",
-    client: "National Freight Rail Operator", industry: "Freight Rail",
-    problem: "Freight rail operator struggled with asset tracking and cargo security...",
-    solution: "End-to-end asset monitoring platform with GPS tracking and condition sensors...",
-    technology: ["GPS Tracking", "Condition Monitoring", "Predictive Analytics", "Geofencing", "Inventory Management"],
-    implementation: "Deployed across 10,000+ freight wagons and 200 locomotives...",
-    results: "30% increase in asset utilization, 20% reduction in transit times...",
-    impact: "Transformed freight operations with real-time visibility...",
-    metrics: { "Asset Utilization": "+30%", "Transit Time": "-20%", "Theft Incidents": "-50%", "ROI": "250%" },
-    gradient: "from-blue-100 to-blue-50",
-    iconName: "BarChart3",
-  },
-];
-
 export default function CaseStudiesPage() {
-  const [studies, setStudies] = useState(fallbackStudies);
+  const [studies, setStudies] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/case-studies")
@@ -88,14 +34,11 @@ export default function CaseStudiesPage() {
               gradient: "from-primary/20 to-primary/5",
               iconName: iconKeys[Math.floor(Math.random() * iconKeys.length)],
             }));
-          if (mapped.length) setStudies(prev => {
-            const existingTitles = new Set(prev.map(p => p.title));
-            const newItems = mapped.filter(p => !existingTitles.has(p.title));
-            return [...prev, ...newItems];
-          });
+          setStudies(mapped);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -112,6 +55,15 @@ export default function CaseStudiesPage() {
       </section>
 
       <SectionWrapper>
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          </div>
+        ) : studies.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-neutral-400">No case studies published yet. Check back soon.</p>
+          </div>
+        ) : (
         <div className="space-y-16">
           {studies.map((study) => {
             const Icon = iconMap[study.iconName] || TrendingUp;
@@ -164,6 +116,7 @@ export default function CaseStudiesPage() {
             );
           })}
         </div>
+        )}
       </SectionWrapper>
 
       <CTASection />
