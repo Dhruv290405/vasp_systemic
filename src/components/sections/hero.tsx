@@ -4,18 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Shield, Radio, LineChart, Wrench, Settings,
-  ChevronRight, BarChart3, Award, Building2,
+  ArrowRight, Shield, Radio, LineChart, Wrench, Settings, ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY } from "@/lib/constants";
 
 const trustIndicators = [
-  { icon: Shield, label: "RDSO Compliant", sub: "Safety Standards" },
-  { icon: Radio, label: "IoT Enabled", sub: "Real-time Monitoring" },
-  { icon: LineChart, label: "AI Powered", sub: "Predictive Analytics" },
+  { icon: Shield, label: "RDSO Approved", sub: "Safety Standards" },
+  { icon: Radio, label: "200+ Installations", sub: "Production Deployed" },
+  { icon: LineChart, label: "Smart Coach Integrated", sub: "Real-time Analytics" },
   { icon: Wrench, label: "Railway Grade", sub: "Enterprise Reliability" },
-  { icon: Settings, label: "25+ Depots", sub: "Production Deployed" },
+  { icon: Settings, label: "Railway Field Ready", sub: "25+ Depots Covered" },
 ];
 
 export function HeroSection() {
@@ -26,8 +25,8 @@ export function HeroSection() {
         <div className="absolute top-0 right-0 w-[45%] h-full bg-gradient-to-bl from-primary/[0.03] to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-neutral to-transparent pointer-events-none" />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-44 w-full">
-          <div className="grid lg:grid-cols-[42%_58%] gap-10 lg:gap-16 items-center">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-36 w-full">
+          <div className="grid lg:grid-cols-[42%_58%] gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -48,7 +47,7 @@ export function HeroSection() {
                 AI + IoT Powered Solutions for Safer, Smarter and More Efficient Railway Operations — trusted by Indian Railways and metro rail authorities.
               </p>
 
-              <div className="mt-8 lg:mt-10 flex flex-wrap gap-4">
+              <div className="mt-6 lg:mt-8 flex flex-wrap gap-3 lg:gap-4">
                 <Link href="/contact?type=demo">
                   <button className="group px-6 lg:px-7 py-3 lg:py-3.5 text-sm font-bold rounded-lg bg-secondary text-white hover:bg-secondary-dark transition-all duration-200 shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 active:scale-[0.98]">
                     <span className="flex items-center gap-2">
@@ -72,17 +71,17 @@ export function HeroSection() {
                 </Link>
               </div>
 
-              <div className="mt-10 lg:mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="mt-6 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
                 {trustIndicators.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.label} className="flex items-start gap-3 px-4 py-3.5 rounded-xl bg-gradient-to-b from-white to-primary/[0.02] border border-primary/[0.08] hover:border-primary/20 hover:shadow-md hover:shadow-primary/5 transition-all duration-200">
-                      <div className="p-2 rounded-lg bg-secondary/10 shrink-0">
-                        <Icon className="w-4 h-4 text-secondary" />
+                    <div key={item.label} className="flex flex-col items-center text-center gap-2.5 p-4 lg:p-5 min-h-[120px] lg:min-h-[130px] justify-center rounded-xl bg-gradient-to-b from-white to-primary/[0.02] border border-primary/[0.08] hover:border-primary/20 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-secondary/10 to-secondary/5 ring-1 ring-secondary/10">
+                        <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-secondary" />
                       </div>
-                      <div className="min-w-0">
-                        <div className="text-xs font-semibold text-neutral-700 leading-snug">{item.label}</div>
-                        <div className="text-[11px] text-neutral-400 leading-snug mt-0.5">{item.sub}</div>
+                      <div>
+                        <div className="text-sm lg:text-[15px] font-bold text-neutral-800 leading-snug">{item.label}</div>
+                        <div className="text-xs lg:text-[13px] text-neutral-400 leading-snug mt-1">{item.sub}</div>
                       </div>
                     </div>
                   );
