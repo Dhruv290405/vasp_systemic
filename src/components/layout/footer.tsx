@@ -1,21 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
-import { COMPANY } from "@/lib/constants";
+import { COMPANY, SOLUTIONS, INDUSTRIES } from "@/lib/constants";
 
 const footerLinks = {
-  solutions: [
-    { label: "Predictive Maintenance", href: "/solutions/predictive-maintenance" },
-    { label: "IoT Monitoring", href: "/solutions/railway-iot-platform" },
-    { label: "Safety Systems", href: "/solutions/safety-intelligence-system" },
-    { label: "Asset Monitoring", href: "/solutions/asset-monitoring" },
-  ],
-  industries: [
-    { label: "Indian Railways", href: "/industries/indian-railways" },
-    { label: "Metro Rail", href: "/industries/metro-rail" },
-    { label: "Industrial IoT", href: "/industries/industrial-iot" },
-    { label: "Smart Infrastructure", href: "/industries/smart-infrastructure" },
-  ],
+  solutions: SOLUTIONS.slice(0, 4).map((s) => ({ label: s.title, href: `/solutions/${s.slug}` })),
+  industries: INDUSTRIES.map((i) => ({ label: i.name, href: `/industries/${i.slug}` })),
   company: [
     { label: "About Us", href: "/about" },
     { label: "Technology", href: "/technology" },

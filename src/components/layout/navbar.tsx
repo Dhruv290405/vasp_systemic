@@ -8,9 +8,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { SOLUTIONS } from "@/lib/constants";
 const BASE_NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
+  {
+    label: "Solutions",
+    href: "/solutions",
+    dropdown: SOLUTIONS.map((s) => ({
+      label: s.title,
+      href: `/solutions/${s.slug}`,
+      description: s.description,
+    })),
+  },
   { label: "Industries", href: "/industries" },
   { label: "Technology", href: "/technology" },
   { label: "Contact", href: "/contact" },
