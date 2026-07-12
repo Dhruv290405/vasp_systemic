@@ -12,9 +12,10 @@ export default function AuthPage() {
   const handleGoogleSignIn = async () => {
     setLoading("google");
     const supabase = createClient();
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${baseUrl.replace(/\/+$/, "")}/auth/callback` },
     });
     if (data.url) window.location.href = data.url;
   };
