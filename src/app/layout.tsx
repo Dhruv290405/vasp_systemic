@@ -75,6 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8845080318367286" crossOrigin="anonymous" />
         <link rel="canonical" href="https://vaspsystemic.com" />
         <script
           type="application/ld+json"
